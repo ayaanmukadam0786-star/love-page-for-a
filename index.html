@@ -7,11 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         /* --- CSS STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -22,11 +18,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            overflow-y: auto; /* Allow scrolling if content gets tall */
             padding: 20px 0;
         }
 
-        /* Container for the main content */
         .container {
             position: relative;
             z-index: 10;
@@ -38,24 +32,23 @@
             align-items: center;
         }
 
-        /* Cute GIF Area */
+        /* GIF Area */
         .gif-container {
             margin-bottom: 10px;
             height: 180px;
             transition: all 0.5s ease;
         }
-        
         .gif-container img {
             height: 100%;
             object-fit: contain;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
 
-        /* Your Photo Area (Initially Hidden) */
+        /* Photo Area */
         #photoContainer {
             margin-top: 20px;
             width: 100%;
-            max-width: 300px; /* Nice size for phone */
+            max-width: 300px;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
@@ -63,20 +56,17 @@
             transform: scale(0.8);
             opacity: 0;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: none; /* Completely hidden initially */
+            display: none; /* Hidden initially */
         }
-
-        #photoContainer img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Visible state for photo */
         #photoContainer.show {
             display: block;
             transform: scale(1);
             opacity: 1;
+        }
+        #photoContainer img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         h1 {
@@ -86,26 +76,23 @@
             line-height: 1.2;
             animation: fadeIn 1.2s ease-in-out;
         }
-
-        p#message {
+        #message {
             font-size: 1.2rem;
             color: #b30044;
             font-weight: 600;
             min-height: 30px;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
         }
 
-        /* Buttons Area */
+        /* Buttons */
         #buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
             position: relative;
-            min-height: 60px;
             width: 100%;
+            min-height: 60px;
         }
-
         button {
             padding: 12px 32px;
             font-size: 1.1rem;
@@ -114,122 +101,55 @@
             border-radius: 50px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             font-family: 'Poppins', sans-serif;
         }
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 2; }
+        #yesBtn:hover { transform: scale(1.1); background-color: #e63950; }
+        #noBtn { background-color: #fff; color: #ff4d6d; border: 2px solid #ff4d6d; position: relative; z-index: 1; }
 
-        #yesBtn {
-            background-color: #ff4d6d;
-            color: white;
-            z-index: 2;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            background-color: #e63950;
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
-        }
-
-        #noBtn {
-            background-color: #fff;
-            color: #ff4d6d;
-            border: 2px solid #ff4d6d;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        /* Overlay for Music Start */
+        /* Overlay */
         #startOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: white;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999; color: white;
         }
-
-        #startOverlay h2 {
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-
         #startBtn {
-            background: #ff4d6d;
-            color: white;
-            font-size: 1.5rem;
-            padding: 15px 40px;
+            background: #ff4d6d; color: white; font-size: 1.5rem; padding: 15px 40px;
             animation: pulse 2s infinite;
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-
-        .heart {
-            position: fixed;
-            color: #ff4d6d;
-            font-size: 24px;
-            animation: floatUp 4s linear forwards;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* Spin effect when running away */
-        .spin {
-            animation: spinAway 0.4s ease;
-        }
-        @keyframes spinAway {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: scale(0.8); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+        @keyframes pulse { 0%{transform:scale(1);} 70%{transform:scale(1.05);} 100%{transform:scale(1);} }
+        .heart { position: fixed; color: #ff4d6d; font-size: 24px; animation: floatUp 4s linear forwards; pointer-events: none; z-index: 5; }
+        @keyframes floatUp { 0%{transform:translateY(0);} 100%{transform:translateY(-100vh);} }
+        .spin { animation: spinAway 0.4s ease; }
+        @keyframes spinAway { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
     </style>
 </head>
 <body>
 
-    <!-- Music Overlay -->
     <div id="startOverlay">
         <h2>For My Love ❤️</h2>
         <button id="startBtn">Tap to Open</button>
     </div>
 
-    <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Ketsa/Raising_Frequency/Ketsa_-_13_-_Raising_Frequency.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
-        <!-- GIF Container -->
         <div class="gif-container">
-            <!-- Fixed: Using reliable Tenor link -->
-            <img id="mainGif" src="https://media1.tenor.com/m/zGm5UBMUT4kAAAAC/mocha-bear-hearts.gif" alt="Cute Bear">
+            <!-- Using direct Tenor GIF link -->
+            <img id="mainGif" src="https://media.tenor.com/zGm5UBMUT4kAAAAj/mocha-bear-hearts.gif" alt="Cute Bear">
         </div>
 
         <h1 id="mainHeading">Anushka, do you love me?</h1>
         <p id="message">Please say yes! 🥺</p>
 
-        <!-- Photo Container (Hidden initially) -->
         <div id="photoContainer">
-            <!-- IMPORTANT: Make sure your photo is named "anushka_photo.jpg" on GitHub! -->
-            <img src="anushka_photo.jpg" alt="Us ❤️" onerror="alert('Image not found! Make sure the file is named anushka_photo.jpg in GitHub')">
+            <!-- The src is empty initially, JS will find the right image -->
+            <img id="myPhoto" src="" alt="Us ❤️">
         </div>
 
         <div id="buttons">
@@ -239,105 +159,95 @@
     </div>
 
     <script>
-        // ---- Elements ----
+        // --- ELEMENTS ---
         const yesBtn = document.getElementById("yesBtn");
         const noBtn = document.getElementById("noBtn");
         const message = document.getElementById("message");
         const mainHeading = document.getElementById("mainHeading");
         const mainGif = document.getElementById("mainGif");
         const photoContainer = document.getElementById("photoContainer");
+        const myPhoto = document.getElementById("myPhoto");
         const bgMusic = document.getElementById('bgMusic');
         const startOverlay = document.getElementById('startOverlay');
         const startBtn = document.getElementById('startBtn');
         const buttonsContainer = document.getElementById('buttons');
 
-        // ---- State ----
         let noClickCount = 0;
         let isRunningAway = false;
 
-        // ---- Audio Start Logic ----
+        // --- IMAGE AUTO-FINDER ---
+        // This tries 3 different names in case you didn't rename it perfectly
+        const possibleImages = [
+            "anushka_photo.jpg", 
+            "photo.jpg", 
+            "WhatsApp Image 2025-11-19 at 16.22.17.jpeg"
+        ];
+
+        function tryLoadImage(index) {
+            if (index >= possibleImages.length) return; // None found
+            const img = new Image();
+            img.onload = function() {
+                myPhoto.src = possibleImages[index]; // Found one that works!
+                console.log("Found image:", possibleImages[index]);
+            };
+            img.onerror = function() {
+                tryLoadImage(index + 1); // Try next one
+            };
+            img.src = possibleImages[index];
+        }
+        // Start looking for the image immediately
+        tryLoadImage(0);
+
+        // --- INTERACTIONS ---
         startBtn.addEventListener('click', () => {
             startOverlay.style.opacity = '0';
-            setTimeout(() => {
-                startOverlay.style.display = 'none';
-            }, 500);
-            
-            // Play music
+            setTimeout(() => startOverlay.style.display = 'none', 500);
             bgMusic.volume = 0.5; 
-            bgMusic.play().catch(error => {
-                console.log("Audio play failed:", error);
-            });
+            bgMusic.play().catch(() => {});
         });
 
-        // ---- YES Button Logic ----
         yesBtn.addEventListener("click", () => {
-            // 1. Change Text
             mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
-            message.innerText = ""; // Clear the "Please say yes" text
+            message.innerText = "";
             
-            // 2. Change Bear GIF to Kissing Bears (Fixed Link)
-            mainGif.src = "https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif";
-
-            // 3. Show Your Photo
+            // Switch to Kissing Bear
+            mainGif.src = "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif";
+            
             photoContainer.classList.add("show");
-
-            // 4. Hide Buttons
             buttonsContainer.style.display = "none";
-
-            // 5. Spawn Hearts
+            
             spawnHearts();
             setInterval(spawnHearts, 300);
         });
 
-        // ---- NO Button Logic ----
         function moveNoButton() {
             const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
             const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
-            const randomX = Math.random() * maxWidth;
-            const randomY = Math.random() * maxHeight;
-
             noBtn.style.position = "fixed";
-            noBtn.style.left = randomX + "px";
-            noBtn.style.top = randomY + "px";
-            
+            noBtn.style.left = Math.random() * maxWidth + "px";
+            noBtn.style.top = Math.random() * maxHeight + "px";
             noBtn.classList.add('spin');
             setTimeout(() => noBtn.classList.remove('spin'), 400);
         }
 
-        noBtn.addEventListener("click", (e) => {
+        noBtn.addEventListener("click", () => {
             noClickCount++;
             if (noClickCount === 1) {
                 message.innerText = "Will you forgive me? 🥺";
-                // Fixed Link for Crying Bear
-                mainGif.src = "https://media1.tenor.com/m/K2Q_3q2hk5oAAAAC/bear-cry.gif";
-            } else if (noClickCount === 2) {
-                message.innerText = "Please na Anushka... 💗";
-            } else if (noClickCount === 3) {
-                message.innerText = "Please na baccha 😢";
-            } else if (noClickCount === 4) {
-                message.innerText = "Okay fine… but I still love you 😤❤️";
-            } else if (noClickCount >= 5) {
+                mainGif.src = "https://media.tenor.com/K2Q_3q2hk5oAAAAj/bear-cry.gif";
+            } else if (noClickCount === 2) message.innerText = "Please na Anushka... 💗";
+            else if (noClickCount === 3) message.innerText = "Please na baccha 😢";
+            else if (noClickCount === 4) message.innerText = "Okay fine… but I still love you 😤❤️";
+            else if (noClickCount >= 5) {
                 message.innerText = "Now you *have* to press YES 😭😂";
                 isRunningAway = true;
                 moveNoButton();
             }
         });
 
-        const runAwayHandler = () => {
-            if (isRunningAway) {
-                moveNoButton();
-            }
-        };
+        noBtn.addEventListener("mouseover", () => { if(isRunningAway) moveNoButton(); });
+        noBtn.addEventListener("touchstart", (e) => { if(isRunningAway) { e.preventDefault(); moveNoButton(); } });
 
-        noBtn.addEventListener("mouseover", runAwayHandler);
-        noBtn.addEventListener("touchstart", (e) => {
-            if (isRunningAway) {
-                e.preventDefault();
-                moveNoButton();
-            }
-        });
-
-        // ---- Heart Animation ----
         function spawnHearts() {
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement("div");
