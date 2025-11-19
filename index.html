@@ -32,14 +32,18 @@
             align-items: center;
         }
 
-        /* GIF Area */
+        /* GIF Area - Fixed Height to prevent layout jump */
         .gif-container {
             margin-bottom: 10px;
-            height: 180px;
-            transition: all 0.5s ease;
+            height: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .gif-container img {
-            height: 100%;
+            max-height: 100%;
+            max-width: 100%;
             object-fit: contain;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
@@ -53,16 +57,14 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
             border: 5px solid white;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: none; /* Hidden initially */
         }
         #photoContainer.show {
             display: block;
-            transform: scale(1);
-            opacity: 1;
+            animation: popIn 0.5s ease;
         }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
         #photoContainer img {
             width: 100%;
             height: auto;
@@ -140,15 +142,14 @@
 
     <div class="container">
         <div class="gif-container">
-            <!-- Using direct Tenor GIF link -->
-            <img id="mainGif" src="https://media.tenor.com/zGm5UBMUT4kAAAAj/mocha-bear-hearts.gif" alt="Cute Bear">
+            <!-- Using the most reliable Tenor direct link -->
+            <img id="mainGif" src="https://media1.tenor.com/m/zGm5UBMUT4kAAAAC/mocha-bear-hearts.gif" alt="Cute Bear">
         </div>
 
         <h1 id="mainHeading">Anushka, do you love me?</h1>
         <p id="message">Please say yes! 🥺</p>
 
         <div id="photoContainer">
-            <!-- The src is empty initially, JS will find the right image -->
             <img id="myPhoto" src="" alt="Us ❤️">
         </div>
 
@@ -159,7 +160,7 @@
     </div>
 
     <script>
-        // --- ELEMENTS ---
+        // --- VARIABLES ---
         const yesBtn = document.getElementById("yesBtn");
         const noBtn = document.getElementById("noBtn");
         const message = document.getElementById("message");
@@ -171,34 +172,38 @@
         const startOverlay = document.getElementById('startOverlay');
         const startBtn = document.getElementById('startBtn');
         const buttonsContainer = document.getElementById('buttons');
-
+        
         let noClickCount = 0;
         let isRunningAway = false;
 
-        // --- IMAGE AUTO-FINDER ---
-        // This tries 3 different names in case you didn't rename it perfectly
+        // --- ROBUST IMAGE LOADING ---
+        // This will try the "Spaces" name AND the "Encoded" name
         const possibleImages = [
-            "anushka_photo.jpg", 
             "photo.jpg", 
-            "WhatsApp Image 2025-11-19 at 16.22.17.jpeg"
+            "anushka_photo.jpg",
+            "WhatsApp Image 2025-11-19 at 16.22.17.jpeg",
+            "WhatsApp%20Image%202025-11-19%20at%2016.22.17.jpeg"
         ];
 
         function tryLoadImage(index) {
-            if (index >= possibleImages.length) return; // None found
+            if (index >= possibleImages.length) {
+                // If all fail, show an alert so you know why
+                console.log("Could not find photo. Please rename photo on GitHub to 'photo.jpg'");
+                return;
+            }
             const img = new Image();
-            img.onload = function() {
-                myPhoto.src = possibleImages[index]; // Found one that works!
-                console.log("Found image:", possibleImages[index]);
+            img.onload = function() { 
+                myPhoto.src = possibleImages[index]; 
+                console.log("Success! Loaded: " + possibleImages[index]);
             };
-            img.onerror = function() {
-                tryLoadImage(index + 1); // Try next one
+            img.onerror = function() { 
+                tryLoadImage(index + 1); 
             };
             img.src = possibleImages[index];
         }
-        // Start looking for the image immediately
         tryLoadImage(0);
 
-        // --- INTERACTIONS ---
+        // --- START BUTTON ---
         startBtn.addEventListener('click', () => {
             startOverlay.style.opacity = '0';
             setTimeout(() => startOverlay.style.display = 'none', 500);
@@ -206,12 +211,13 @@
             bgMusic.play().catch(() => {});
         });
 
+        // --- YES BUTTON ---
         yesBtn.addEventListener("click", () => {
             mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
             message.innerText = "";
             
-            // Switch to Kissing Bear
-            mainGif.src = "https://media.tenor.com/gUiu1zyxfzYAAAAj/bear-kiss-bear-kisses.gif";
+            // Reliable Kissing Bear Link
+            mainGif.src = "https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif";
             
             photoContainer.classList.add("show");
             buttonsContainer.style.display = "none";
@@ -220,6 +226,7 @@
             setInterval(spawnHearts, 300);
         });
 
+        // --- NO BUTTON MOVEMENT ---
         function moveNoButton() {
             const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
             const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
@@ -230,11 +237,12 @@
             setTimeout(() => noBtn.classList.remove('spin'), 400);
         }
 
+        // --- NO BUTTON CLICK ---
         noBtn.addEventListener("click", () => {
             noClickCount++;
             if (noClickCount === 1) {
                 message.innerText = "Will you forgive me? 🥺";
-                mainGif.src = "https://media.tenor.com/K2Q_3q2hk5oAAAAj/bear-cry.gif";
+                mainGif.src = "https://media1.tenor.com/m/K2Q_3q2hk5oAAAAC/bear-cry.gif";
             } else if (noClickCount === 2) message.innerText = "Please na Anushka... 💗";
             else if (noClickCount === 3) message.innerText = "Please na baccha 😢";
             else if (noClickCount === 4) message.innerText = "Okay fine… but I still love you 😤❤️";
@@ -248,6 +256,7 @@
         noBtn.addEventListener("mouseover", () => { if(isRunningAway) moveNoButton(); });
         noBtn.addEventListener("touchstart", (e) => { if(isRunningAway) { e.preventDefault(); moveNoButton(); } });
 
+        // --- HEARTS ---
         function spawnHearts() {
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement("div");
