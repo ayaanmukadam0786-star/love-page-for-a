@@ -1,352 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>For Anushka ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        /* --- CSS STYLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Anushka ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#ffccd5,#ffe6ec,#ffdce5);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow-y:auto;
+    padding:20px 0;
+}
+.container{
+    position:relative;
+    z-index:10;
+    padding:20px;
+    width:100%;
+    max-width:600px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.gif-container{margin-bottom:10px;height:180px;transition:all .5s ease;}
+.gif-container img{height:100%;object-fit:contain;filter:drop-shadow(0 5px 15px rgba(0,0,0,0.1));}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffccd5 0%, #ffe6ec 50%, #ffdce5 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow-y: auto; /* Allow scrolling if content gets tall */
-            padding: 20px 0;
-        }
+#photoContainer{
+    margin-top:20px;
+    width:100%;
+    max-width:300px;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(255,77,109,0.3);
+    border:5px solid white;
+    transform:scale(.8);
+    opacity:0;
+    transition:all .5s cubic-bezier(.175,.885,.32,1.275);
+    display:none;
+}
+#photoContainer.show{display:block;transform:scale(1);opacity:1;}
+#photoContainer img{width:100%;height:auto;display:block;}
 
-        /* Container for the main content */
-        .container {
-            position: relative;
-            z-index: 10;
-            padding: 20px;
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+h1{font-size:2.2rem;color:#d6336c;margin:15px 0;line-height:1.2;}
+#message{font-size:1.2rem;color:#b30044;font-weight:600;min-height:30px;margin-bottom:20px;}
 
-        /* Cute GIF Area */
-        .gif-container {
-            margin-bottom: 10px;
-            height: 180px;
-            transition: all 0.5s ease;
-        }
-        
-        .gif-container img {
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
-        }
+#buttons{display:flex;justify-content:center;gap:20px;min-height:60px;width:100%;}
+button{
+    padding:12px 32px;font-size:1.1rem;font-weight:bold;border:none;border-radius:50px;
+    cursor:pointer;transition:.2s;box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+#yesBtn{background-color:#ff4d6d;color:white;}
+#yesBtn:hover{transform:scale(1.1);background:#e63950;}
 
-        /* Your Photo Area (Initially Hidden) */
-        #photoContainer {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 300px; /* Nice size for phone */
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
-            border: 5px solid white;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: none; /* Completely hidden initially */
-        }
+#noBtn{
+    background:white;color:#ff4d6d;border:2px solid #ff4d6d;
+    position:relative;transition:.3s;
+}
 
-        #photoContainer img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+.heart{
+    position:fixed;color:#ff4d6d;font-size:24px;
+    animation:floatUp 4s linear forwards;pointer-events:none;z-index:5;
+}
+@keyframes floatUp{
+    0%{transform:translateY(0) rotate(0);opacity:1;}
+    100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}
+}
+.spin{animation:spinAway .4s ease;}
+@keyframes spinAway{
+    0%{transform:rotate(0) scale(1);}
+    50%{transform:scale(.8);}
+    100%{transform:rotate(360deg) scale(1);}
+}
 
-        /* Visible state for photo */
-        #photoContainer.show {
-            display: block;
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            color: #d6336c;
-            margin: 15px 0;
-            line-height: 1.2;
-            animation: fadeIn 1.2s ease-in-out;
-        }
-
-        p#message {
-            font-size: 1.2rem;
-            color: #b30044;
-            font-weight: 600;
-            min-height: 30px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        /* Buttons Area */
-        #buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
-            min-height: 60px;
-            width: 100%;
-        }
-
-        button {
-            padding: 12px 32px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-family: 'Poppins', sans-serif;
-        }
-
-        #yesBtn {
-            background-color: #ff4d6d;
-            color: white;
-            z-index: 2;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            background-color: #e63950;
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
-        }
-
-        #noBtn {
-            background-color: #fff;
-            color: #ff4d6d;
-            border: 2px solid #ff4d6d;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        /* Overlay for Music Start */
-        #startOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: white;
-        }
-
-        #startOverlay h2 {
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-
-        #startBtn {
-            background: #ff4d6d;
-            color: white;
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            animation: pulse 2s infinite;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-
-        .heart {
-            position: fixed;
-            color: #ff4d6d;
-            font-size: 24px;
-            animation: floatUp 4s linear forwards;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* Spin effect when running away */
-        .spin {
-            animation: spinAway 0.4s ease;
-        }
-        @keyframes spinAway {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: scale(0.8); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-    </style>
+#startOverlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(5px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    z-index:9999;color:white;
+}
+#startBtn{
+    background:#ff4d6d;color:white;font-size:1.5rem;padding:15px 40px;
+    animation:pulse 2s infinite;
+}
+@keyframes pulse{
+    0%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,77,109,.7);}
+    70%{transform:scale(1.05);box-shadow:0 0 0 20px rgba(255,77,109,0);}
+    100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,77,109,0);}
+}
+</style>
 </head>
 <body>
 
-    <!-- Music Overlay -->
-    <div id="startOverlay">
-        <h2>For My Love ❤️</h2>
-        <button id="startBtn">Tap to Open</button>
+<div id="startOverlay">
+    <h2>For My Love ❤️</h2>
+    <button id="startBtn">Tap to Open</button>
+</div>
+
+<audio id="bgMusic" loop>
+<source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Ketsa/Raising_Frequency/Ketsa_-_13_-_Raising_Frequency.mp3">
+</audio>
+
+<div class="container">
+    <div class="gif-container">
+        <img id="mainGif" src="https://i.imgur.com/lpY8z0p.gif">
     </div>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" loop>
-        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Ketsa/Raising_Frequency/Ketsa_-_13_-_Raising_Frequency.mp3" type="audio/mpeg">
-    </audio>
+    <h1 id="mainHeading">Anushka, do you love me?</h1>
+    <p id="message">Please say yes! 🥺</p>
 
-    <div class="container">
-        <!-- GIF Container -->
-        <div class="gif-container">
-            <img id="mainGif" src="https://media1.tenor.com/m/zGm5UBMUT4kAAAAC/mocha-bear-hearts.gif" alt="Cute Bear">
-        </div>
-
-        <h1 id="mainHeading">Anushka, do you love me?</h1>
-        <p id="message">Please say yes! 🥺</p>
-
-        <!-- Photo Container (Hidden initially) -->
-        <div id="photoContainer">
-            <!-- IMPORTANT: Make sure your photo is named "photo.jpg" on GitHub! -->
-            <img src="photo.jpg" alt="Us ❤️" onerror="this.style.display='none'">
-        </div>
-
-        <div id="buttons">
-            <button id="yesBtn">Yes</button>
-            <button id="noBtn">No</button>
-        </div>
+    <div id="photoContainer">
+        <img src="anushka_photo.jpg" alt="Us ❤️">
     </div>
 
-    <script>
-        // ---- Elements ----
-        const yesBtn = document.getElementById("yesBtn");
-        const noBtn = document.getElementById("noBtn");
-        const message = document.getElementById("message");
-        const mainHeading = document.getElementById("mainHeading");
-        const mainGif = document.getElementById("mainGif");
-        const photoContainer = document.getElementById("photoContainer");
-        const bgMusic = document.getElementById('bgMusic');
-        const startOverlay = document.getElementById('startOverlay');
-        const startBtn = document.getElementById('startBtn');
-        const buttonsContainer = document.getElementById('buttons');
+    <div id="buttons">
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+    </div>
+</div>
 
-        // ---- State ----
-        let noClickCount = 0;
-        let isRunningAway = false;
+<script>
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const message=document.getElementById("message");
+const mainHeading=document.getElementById("mainHeading");
+const mainGif=document.getElementById("mainGif");
+const photoContainer=document.getElementById("photoContainer");
+const bgMusic=document.getElementById("bgMusic");
+const startOverlay=document.getElementById("startOverlay");
+const startBtn=document.getElementById("startBtn");
+const buttonsContainer=document.getElementById("buttons");
 
-        // ---- Audio Start Logic ----
-        startBtn.addEventListener('click', () => {
-            startOverlay.style.opacity = '0';
-            setTimeout(() => {
-                startOverlay.style.display = 'none';
-            }, 500);
-            
-            // Play music
-            bgMusic.volume = 0.5; 
-            bgMusic.play().catch(error => {
-                console.log("Audio play failed:", error);
-            });
-        });
+let noClickCount=0,isRunningAway=false;
 
-        // ---- YES Button Logic ----
-        yesBtn.addEventListener("click", () => {
-            // 1. Change Text
-            mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
-            message.innerText = ""; // Clear the "Please say yes" text
-            
-            // 2. Change Bear GIF to Kissing Bears
-            mainGif.src = "https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif";
+startBtn.addEventListener("click",()=>{
+    startOverlay.style.opacity="0";
+    setTimeout(()=>startOverlay.style.display="none",500);
+    bgMusic.volume=.5;bgMusic.play().catch(()=>{});
+});
 
-            // 3. Show Your Photo
-            photoContainer.classList.add("show");
+yesBtn.addEventListener("click",()=>{
+    mainHeading.innerText="Yay! I love you too Anushka! ❤️";
+    message.innerText="";
+    mainGif.src="https://i.imgur.com/IZxJx4U.gif";
+    photoContainer.classList.add("show");
+    buttonsContainer.style.display="none";
+    spawnHearts();
+    setInterval(spawnHearts,300);
+});
 
-            // 4. Hide Buttons
-            buttonsContainer.style.display = "none";
+function moveNoButton(){
+    const maxWidth=window.innerWidth-noBtn.offsetWidth-20;
+    const maxHeight=window.innerHeight-noBtn.offsetHeight-20;
+    const randomX=Math.random()*maxWidth;
+    const randomY=Math.random()*maxHeight;
+    noBtn.style.position="fixed";
+    noBtn.style.left=randomX+"px";
+    noBtn.style.top=randomY+"px";
+    noBtn.classList.add("spin");
+    setTimeout(()=>noBtn.classList.remove("spin"),400);
+}
 
-            // 5. Spawn Hearts
-            spawnHearts();
-            setInterval(spawnHearts, 300);
-        });
+noBtn.addEventListener("click",()=>{
+    noClickCount++;
+    if(noClickCount===1){
+        message.innerText="Will you forgive me? 🥺";
+        mainGif.src="https://i.imgur.com/EwA8O1W.gif";
+    }else if(noClickCount===2){
+        message.innerText="Please na Anushka... 💗";
+    }else if(noClickCount===3){
+        message.innerText="Please na baccha 😢";
+    }else if(noClickCount===4){
+        message.innerText="Okay fine… but I still love you 😤❤️";
+    }else if(noClickCount>=5){
+        message.innerText="Now you *have* to press YES 😭😂";
+        isRunningAway=true;
+        moveNoButton();
+    }
+});
 
-        // ---- NO Button Logic ----
-        function moveNoButton() {
-            const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
-            const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
-            const randomX = Math.random() * maxWidth;
-            const randomY = Math.random() * maxHeight;
+noBtn.addEventListener("mouseover",()=>{if(isRunningAway)moveNoButton();});
+noBtn.addEventListener("touchstart",(e)=>{if(isRunningAway){e.preventDefault();moveNoButton();}});
 
-            noBtn.style.position = "fixed";
-            noBtn.style.left = randomX + "px";
-            noBtn.style.top = randomY + "px";
-            
-            noBtn.classList.add('spin');
-            setTimeout(() => noBtn.classList.remove('spin'), 400);
-        }
+function spawnHearts(){
+    for(let i=0;i<5;i++){
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="❤️";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.animationDuration=Math.random()*2+3+"s";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),5000);
+    }
+}
+</script>
 
-        noBtn.addEventListener("click", (e) => {
-            noClickCount++;
-            if (noClickCount === 1) {
-                message.innerText = "Will you forgive me? 🥺";
-                mainGif.src = "https://media1.tenor.com/m/K2Q_3q2hk5oAAAAC/bear-cry.gif";
-            } else if (noClickCount === 2) {
-                message.innerText = "Please na Anushka... 💗";
-            } else if (noClickCount === 3) {
-                message.innerText = "Please na baccha 😢";
-            } else if (noClickCount === 4) {
-                message.innerText = "Okay fine… but I still love you 😤❤️";
-            } else if (noClickCount >= 5) {
-                message.innerText = "Now you *have* to press YES 😭😂";
-                isRunningAway = true;
-                moveNoButton();
-            }
-        });
-
-        const runAwayHandler = () => {
-            if (isRunningAway) {
-                moveNoButton();
-            }
-        };
-
-        noBtn.addEventListener("mouseover", runAwayHandler);
-        noBtn.addEventListener("touchstart", (e) => {
-            if (isRunningAway) {
-                e.preventDefault();
-                moveNoButton();
-            }
-        });
-
-        // ---- Heart Animation ----
-        function spawnHearts() {
-            for (let i = 0; i < 5; i++) {
-                const heart = document.createElement("div");
-                heart.classList.add("heart");
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = Math.random() * 2 + 3 + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }
-        }
-    </script>
 </body>
 </html>
