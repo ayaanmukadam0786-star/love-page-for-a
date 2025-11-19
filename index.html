@@ -6,7 +6,6 @@
     <title>For Anushka ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -32,7 +31,6 @@
             align-items: center;
         }
 
-        /* GIF Area - Fixed Height to prevent layout jump */
         .gif-container {
             margin-bottom: 10px;
             height: 200px;
@@ -48,7 +46,6 @@
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
 
-        /* Photo Area */
         #photoContainer {
             margin-top: 20px;
             width: 100%;
@@ -57,7 +54,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
             border: 5px solid white;
-            display: none; /* Hidden initially */
+            display: none;
         }
         #photoContainer.show {
             display: block;
@@ -86,7 +83,6 @@
             margin-bottom: 20px;
         }
 
-        /* Buttons */
         #buttons {
             display: flex;
             justify-content: center;
@@ -109,7 +105,6 @@
         #yesBtn:hover { transform: scale(1.1); background-color: #e63950; }
         #noBtn { background-color: #fff; color: #ff4d6d; border: 2px solid #ff4d6d; position: relative; z-index: 1; }
 
-        /* Overlay */
         #startOverlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px); display: flex; flex-direction: column;
@@ -120,7 +115,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* Animations */
         @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
         @keyframes pulse { 0%{transform:scale(1);} 70%{transform:scale(1.05);} 100%{transform:scale(1);} }
         .heart { position: fixed; color: #ff4d6d; font-size: 24px; animation: floatUp 4s linear forwards; pointer-events: none; z-index: 5; }
@@ -142,8 +136,8 @@
 
     <div class="container">
         <div class="gif-container">
-            <!-- Using the most reliable Tenor direct link -->
-            <img id="mainGif" src="https://media1.tenor.com/m/zGm5UBMUT4kAAAAC/mocha-bear-hearts.gif" alt="Cute Bear">
+            <!-- Replaced Tenor with Imgur (reliable on GitHub Pages) -->
+            <img id="mainGif" src="https://i.imgur.com/lpY8z0p.gif" alt="Cute Bear">
         </div>
 
         <h1 id="mainHeading">Anushka, do you love me?</h1>
@@ -160,7 +154,6 @@
     </div>
 
     <script>
-        // --- VARIABLES ---
         const yesBtn = document.getElementById("yesBtn");
         const noBtn = document.getElementById("noBtn");
         const message = document.getElementById("message");
@@ -176,57 +169,48 @@
         let noClickCount = 0;
         let isRunningAway = false;
 
-        // --- ROBUST IMAGE LOADING ---
-        // This will try the "Spaces" name AND the "Encoded" name
+        // Try a few possible photo filenames (case-sensitive) — will set myPhoto.src if found
         const possibleImages = [
-            "photo.jpg", 
             "anushka_photo.jpg",
-            "WhatsApp Image 2025-11-19 at 16.22.17.jpeg",
-            "WhatsApp%20Image%202025-11-19%20at%2016.22.17.jpeg"
+            "photo.jpg",
+            "anushka-photo.jpg",
+            "photo.JPG",
+            "photo.jpeg"
         ];
 
         function tryLoadImage(index) {
-            if (index >= possibleImages.length) {
-                // If all fail, show an alert so you know why
-                console.log("Could not find photo. Please rename photo on GitHub to 'photo.jpg'");
-                return;
-            }
-            const img = new Image();
-            img.onload = function() { 
-                myPhoto.src = possibleImages[index]; 
-                console.log("Success! Loaded: " + possibleImages[index]);
+            if (index >= possibleImages.length) return;
+            const test = new Image();
+            test.onload = () => {
+                myPhoto.src = possibleImages[index];
+                console.log("Loaded photo:", possibleImages[index]);
             };
-            img.onerror = function() { 
-                tryLoadImage(index + 1); 
-            };
-            img.src = possibleImages[index];
+            test.onerror = () => tryLoadImage(index + 1);
+            test.src = possibleImages[index];
         }
         tryLoadImage(0);
 
-        // --- START BUTTON ---
         startBtn.addEventListener('click', () => {
             startOverlay.style.opacity = '0';
-            setTimeout(() => startOverlay.style.display = 'none', 500);
+            setTimeout(() => startOverlay.style.display = 'none', 400);
             bgMusic.volume = 0.5; 
             bgMusic.play().catch(() => {});
         });
 
-        // --- YES BUTTON ---
         yesBtn.addEventListener("click", () => {
             mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
             message.innerText = "";
-            
-            // Reliable Kissing Bear Link
-            mainGif.src = "https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif";
-            
+
+            // Kissing-bears (Imgur)
+            mainGif.src = "https://i.imgur.com/IZxJx4U.gif";
+
             photoContainer.classList.add("show");
             buttonsContainer.style.display = "none";
-            
+
             spawnHearts();
             setInterval(spawnHearts, 300);
         });
 
-        // --- NO BUTTON MOVEMENT ---
         function moveNoButton() {
             const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
             const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
@@ -237,12 +221,12 @@
             setTimeout(() => noBtn.classList.remove('spin'), 400);
         }
 
-        // --- NO BUTTON CLICK ---
         noBtn.addEventListener("click", () => {
             noClickCount++;
             if (noClickCount === 1) {
                 message.innerText = "Will you forgive me? 🥺";
-                mainGif.src = "https://media1.tenor.com/m/K2Q_3q2hk5oAAAAC/bear-cry.gif";
+                // Crying bear (Imgur)
+                mainGif.src = "https://i.imgur.com/EwA8O1W.gif";
             } else if (noClickCount === 2) message.innerText = "Please na Anushka... 💗";
             else if (noClickCount === 3) message.innerText = "Please na baccha 😢";
             else if (noClickCount === 4) message.innerText = "Okay fine… but I still love you 😤❤️";
@@ -256,7 +240,6 @@
         noBtn.addEventListener("mouseover", () => { if(isRunningAway) moveNoButton(); });
         noBtn.addEventListener("touchstart", (e) => { if(isRunningAway) { e.preventDefault(); moveNoButton(); } });
 
-        // --- HEARTS ---
         function spawnHearts() {
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement("div");
