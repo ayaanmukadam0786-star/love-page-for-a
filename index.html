@@ -37,6 +37,7 @@
             align-items: center;
             margin-bottom: 10px;
         }
+
         .gif-container img {
             max-width: 100%;
             max-height: 100%;
@@ -52,6 +53,7 @@
             border: 5px solid white;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
         }
+
         #photoContainer.show { display: block; }
 
         #photoContainer img { width: 100%; display: block; }
@@ -64,6 +66,7 @@
             gap: 20px;
             min-height: 60px;
         }
+
         button {
             padding: 12px 32px;
             font-size: 1.1rem;
@@ -76,8 +79,13 @@
 
         #yesBtn { background-color: #ff4d6d; color: white; }
         #yesBtn:hover { transform: scale(1.1); }
-        
-        #noBtn { border: 2px solid #ff4d6d; color: #ff4d6d; background: white; }
+
+        #noBtn {
+            border: 2px solid #ff4d6d;
+            color: #ff4d6d;
+            background: white;
+            position: relative;
+        }
 
         #startOverlay {
             position: fixed;
@@ -128,7 +136,7 @@
     <div class="container">
 
         <div class="gif-container">
-            <!-- UPDATED GIF (Local File) -->
+            <!-- MAIN GIF (Local File) -->
             <img id="mainGif" src="cute_bear.gif" alt="Cute Bear">
         </div>
 
@@ -136,7 +144,7 @@
         <p id="message">Please say yes! 🥺</p>
 
         <div id="photoContainer">
-            <img id="myPhoto" src="anushka_photo.jpg" alt="Us ❤️">
+            <img src="anushka_photo.jpg" alt="Us ❤️">
         </div>
 
         <div id="buttons">
@@ -153,15 +161,15 @@
         const mainHeading = document.getElementById("mainHeading");
         const mainGif = document.getElementById("mainGif");
         const photoContainer = document.getElementById("photoContainer");
-        const bgMusic = document.getElementById("bgMusic");
         const startOverlay = document.getElementById("startOverlay");
         const startBtn = document.getElementById("startBtn");
-        
+
         let noClickCount = 0;
         let isRunningAway = false;
 
         startBtn.addEventListener("click", () => {
             startOverlay.style.display = "none";
+            const bgMusic = document.getElementById("bgMusic");
             bgMusic.volume = 0.5;
             bgMusic.play();
         });
@@ -170,7 +178,9 @@
             mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
             message.innerText = "";
 
-            mainGif.src = "https://i.imgur.com/IZxJx4U.gif"; // kissing gif
+            // Kissing GIF (Local)
+            mainGif.src = "kissing_bear.gif";
+
             photoContainer.classList.add("show");
 
             document.getElementById("buttons").style.display = "none";
@@ -184,7 +194,7 @@
 
             if (noClickCount === 1) {
                 message.innerText = "Will you forgive me? 🥺";
-                mainGif.src = "https://i.imgur.com/EwA8O1W.gif"; // crying bear
+                mainGif.src = "crying_bear.gif"; // Local crying gif
             } else if (noClickCount === 2) {
                 message.innerText = "Please na Anushka... 💗";
             } else if (noClickCount === 3) {
@@ -198,11 +208,14 @@
             }
         });
 
-        noBtn.addEventListener("mouseover", () => { if(isRunningAway) moveNoButton(); });
+        noBtn.addEventListener("mouseover", () => {
+            if (isRunningAway) moveNoButton();
+        });
 
         function moveNoButton() {
             const maxX = window.innerWidth - noBtn.clientWidth - 20;
             const maxY = window.innerHeight - noBtn.clientHeight - 20;
+
             noBtn.style.position = "fixed";
             noBtn.style.left = Math.random() * maxX + "px";
             noBtn.style.top = Math.random() * maxY + "px";
@@ -217,7 +230,7 @@
                 heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
                 document.body.appendChild(heart);
 
-                setTimeout(() => heart.remove(), 4000);
+                setTimeout(() => heart.remove(), 5000);
             }
         }
     </script>
