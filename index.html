@@ -7,11 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
+        /* --- CSS STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffccd5, #ffe6ec, #ffdce5);
+            background: linear-gradient(135deg, #ffccd5 0%, #ffe6ec 50%, #ffdce5 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -19,54 +20,83 @@
             justify-content: center;
             text-align: center;
             padding: 20px 0;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 600px;
-            width: 100%;
+            position: relative;
+            z-index: 10;
             padding: 20px;
+            width: 100%;
+            max-width: 600px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
+        /* GIF Area */
         .gif-container {
+            margin-bottom: 10px;
             height: 200px;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 10px;
         }
-
         .gif-container img {
-            max-width: 100%;
             max-height: 100%;
+            max-width: 100%;
             object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
 
+        /* Photo Area */
         #photoContainer {
-            display: none;
             margin-top: 20px;
+            width: 100%;
             max-width: 300px;
             border-radius: 15px;
             overflow: hidden;
-            border: 5px solid white;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+            border: 5px solid white;
+            display: none; /* Hidden initially */
+        }
+        #photoContainer.show {
+            display: block;
+            animation: popIn 0.5s ease;
+        }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        #photoContainer img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
-        #photoContainer.show { display: block; }
+        h1 {
+            font-size: 2.2rem;
+            color: #d6336c;
+            margin: 15px 0;
+            line-height: 1.2;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        #message {
+            font-size: 1.2rem;
+            color: #b30044;
+            font-weight: 600;
+            min-height: 30px;
+            margin-bottom: 20px;
+        }
 
-        #photoContainer img { width: 100%; display: block; }
-
-        h1 { font-size: 2.2rem; color: #d6336c; margin: 15px 0; }
-        #message { font-size: 1.2rem; color: #b30044; font-weight: 600; min-height: 30px; margin-bottom: 20px; }
-
+        /* Buttons */
         #buttons {
             display: flex;
+            justify-content: center;
             gap: 20px;
+            position: relative;
+            width: 100%;
             min-height: 60px;
         }
-
         button {
             padding: 12px 32px;
             font-size: 1.1rem;
@@ -74,51 +104,31 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
         }
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 2; }
+        #yesBtn:hover { transform: scale(1.1); background-color: #e63950; }
+        #noBtn { background-color: #fff; color: #ff4d6d; border: 2px solid #ff4d6d; position: relative; z-index: 1; }
 
-        #yesBtn { background-color: #ff4d6d; color: white; }
-        #yesBtn:hover { transform: scale(1.1); }
-
-        #noBtn {
-            border: 2px solid #ff4d6d;
-            color: #ff4d6d;
-            background: white;
-            position: relative;
-        }
-
+        /* Overlay */
         #startOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            z-index: 9999;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999; color: white;
         }
-
         #startBtn {
-            background: #ff4d6d;
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            background: #ff4d6d; color: white; font-size: 1.5rem; padding: 15px 40px;
+            animation: pulse 2s infinite;
         }
 
-        .heart {
-            position: fixed;
-            font-size: 24px;
-            color: #ff4d6d;
-            animation: floatUp 4s linear forwards;
-            pointer-events: none;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100vh); opacity: 0; }
-        }
+        /* Animations */
+        @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+        @keyframes pulse { 0%{transform:scale(1);} 70%{transform:scale(1.05);} 100%{transform:scale(1);} }
+        .heart { position: fixed; color: #ff4d6d; font-size: 24px; animation: floatUp 4s linear forwards; pointer-events: none; z-index: 5; }
+        @keyframes floatUp { 0%{transform:translateY(0);} 100%{transform:translateY(-100vh);} }
+        .spin { animation: spinAway 0.4s ease; }
+        @keyframes spinAway { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
     </style>
 </head>
 
@@ -134,106 +144,141 @@
     </audio>
 
     <div class="container">
-
         <div class="gif-container">
-            <!-- MAIN GIF (Local File) -->
-            <img id="mainGif" src="cute_bear.gif" alt="Cute Bear">
+            <!-- MAIN IMAGE LOADER -->
+            <!-- It tries to load 'cute_bear.gif'. If it fails, it loads the Tenor link. -->
+            <img id="mainGif" src="cute_bear.gif" alt="Cute Bear" onerror="this.onerror=null; this.src='https://media1.tenor.com/m/zGm5UBMUT4kAAAAC/mocha-bear-hearts.gif'">
         </div>
 
         <h1 id="mainHeading">Anushka, do you love me?</h1>
         <p id="message">Please say yes! 🥺</p>
 
         <div id="photoContainer">
-            <img src="anushka_photo.jpg" alt="Us ❤️">
+            <!-- PHOTO LOADER -->
+            <img id="myPhoto" src="anushka_photo.jpg" alt="Us ❤️">
         </div>
 
         <div id="buttons">
             <button id="yesBtn">Yes</button>
             <button id="noBtn">No</button>
         </div>
-
     </div>
 
     <script>
+        // --- VARIABLES ---
         const yesBtn = document.getElementById("yesBtn");
         const noBtn = document.getElementById("noBtn");
         const message = document.getElementById("message");
         const mainHeading = document.getElementById("mainHeading");
         const mainGif = document.getElementById("mainGif");
         const photoContainer = document.getElementById("photoContainer");
-        const startOverlay = document.getElementById("startOverlay");
-        const startBtn = document.getElementById("startBtn");
-
+        const myPhoto = document.getElementById("myPhoto");
+        const bgMusic = document.getElementById('bgMusic');
+        const startOverlay = document.getElementById('startOverlay');
+        const startBtn = document.getElementById('startBtn');
+        const buttonsContainer = document.getElementById('buttons');
+        
         let noClickCount = 0;
         let isRunningAway = false;
 
-        startBtn.addEventListener("click", () => {
-            startOverlay.style.display = "none";
-            const bgMusic = document.getElementById("bgMusic");
-            bgMusic.volume = 0.5;
-            bgMusic.play();
+        // --- SMART PHOTO LOADER ---
+        // Tries to find your photo using different common names
+        const possibleImages = [
+            "anushka_photo.jpg",
+            "photo.jpg", 
+            "WhatsApp Image 2025-11-19 at 16.22.17.jpeg",
+            "WhatsApp%20Image%202025-11-19%20at%2016.22.17.jpeg"
+        ];
+        let photoIndex = 0;
+        function tryNextPhoto() {
+            if (photoIndex < possibleImages.length) {
+                myPhoto.src = possibleImages[photoIndex];
+                photoIndex++;
+            }
+        }
+        // Attach the error handler to the photo element
+        myPhoto.onerror = tryNextPhoto;
+        // Start by trying the first name
+        tryNextPhoto();
+
+        // --- START BUTTON ---
+        startBtn.addEventListener('click', () => {
+            startOverlay.style.opacity = '0';
+            setTimeout(() => startOverlay.style.display = 'none', 500);
+            bgMusic.volume = 0.5; 
+            bgMusic.play().catch(() => {});
         });
 
+        // --- YES BUTTON ---
         yesBtn.addEventListener("click", () => {
             mainHeading.innerText = "Yay! I love you too Anushka! ❤️";
             message.innerText = "";
-
-            // Kissing GIF (Local)
-            mainGif.src = "kissing_bear.gif";
-
+            
+            // 1. Try your uploaded file: kissing_bear.gif
+            // 2. If that fails, use the online link
+            mainGif.onerror = function() {
+                this.src = "https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif";
+                this.onerror = null; // Stop infinite loops
+            };
+            mainGif.src = "kissing_bear.gif"; 
+            
             photoContainer.classList.add("show");
-
-            document.getElementById("buttons").style.display = "none";
-
+            buttonsContainer.style.display = "none";
+            
             spawnHearts();
             setInterval(spawnHearts, 300);
         });
 
+        // --- NO BUTTON MOVEMENT ---
+        function moveNoButton() {
+            const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
+            noBtn.style.position = "fixed";
+            noBtn.style.left = Math.random() * maxWidth + "px";
+            noBtn.style.top = Math.random() * maxHeight + "px";
+            noBtn.classList.add('spin');
+            setTimeout(() => noBtn.classList.remove('spin'), 400);
+        }
+
+        // --- NO BUTTON CLICK ---
         noBtn.addEventListener("click", () => {
             noClickCount++;
-
             if (noClickCount === 1) {
                 message.innerText = "Will you forgive me? 🥺";
-                mainGif.src = "crying_bear.gif"; // Local crying gif
-            } else if (noClickCount === 2) {
-                message.innerText = "Please na Anushka... 💗";
-            } else if (noClickCount === 3) {
-                message.innerText = "Please na baccha 😢";
-            } else if (noClickCount === 4) {
-                message.innerText = "Okay fine… but I still love you 😤❤️";
-            } else if (noClickCount >= 5) {
+                
+                // 1. Try your uploaded file: crying_bear.gif
+                // 2. If that fails, use the online link
+                mainGif.onerror = function() {
+                    this.src = "https://media1.tenor.com/m/K2Q_3q2hk5oAAAAC/bear-cry.gif";
+                    this.onerror = null;
+                };
+                mainGif.src = "crying_bear.gif";
+
+            } else if (noClickCount === 2) message.innerText = "Please na Anushka... 💗";
+            else if (noClickCount === 3) message.innerText = "Please na baccha 😢";
+            else if (noClickCount === 4) message.innerText = "Okay fine… but I still love you 😤❤️";
+            else if (noClickCount >= 5) {
                 message.innerText = "Now you *have* to press YES 😭😂";
                 isRunningAway = true;
                 moveNoButton();
             }
         });
 
-        noBtn.addEventListener("mouseover", () => {
-            if (isRunningAway) moveNoButton();
-        });
+        noBtn.addEventListener("mouseover", () => { if(isRunningAway) moveNoButton(); });
+        noBtn.addEventListener("touchstart", (e) => { if(isRunningAway) { e.preventDefault(); moveNoButton(); } });
 
-        function moveNoButton() {
-            const maxX = window.innerWidth - noBtn.clientWidth - 20;
-            const maxY = window.innerHeight - noBtn.clientHeight - 20;
-
-            noBtn.style.position = "fixed";
-            noBtn.style.left = Math.random() * maxX + "px";
-            noBtn.style.top = Math.random() * maxY + "px";
-        }
-
+        // --- HEARTS ---
         function spawnHearts() {
             for (let i = 0; i < 5; i++) {
                 const heart = document.createElement("div");
-                heart.className = "heart";
+                heart.classList.add("heart");
                 heart.innerHTML = "❤️";
                 heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+                heart.style.animationDuration = Math.random() * 2 + 3 + "s";
                 document.body.appendChild(heart);
-
                 setTimeout(() => heart.remove(), 5000);
             }
         }
     </script>
-
 </body>
 </html>
